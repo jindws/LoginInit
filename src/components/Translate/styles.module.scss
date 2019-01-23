@@ -1,0 +1,16 @@
+.translateToggle {
+  display: block;
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  bottom: 40px;
+  right: 10px;
+  z-index: 20;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 750px) {
+  .translateToggle {
+    display: none;
+  }
+}

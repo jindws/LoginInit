@@ -1,0 +1,428 @@
+@media screen and (max-width: 750px) {
+    .panel {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        .image {
+            display: none;
+        }
+        .close {
+            display: none;
+        }
+        .back {
+            left: 127px;
+            top: 87px;
+            font-size: 64px;
+        }
+        .block {
+            width: 100%;
+            overflow: auto;
+            .tabs {
+                display: none;
+            }
+        }
+    }
+    .info {
+        padding: 157px 117px 255px;
+        .logo {
+            display: flex;
+            img {
+                width: 437px;
+                height: 437px;
+            }
+        }
+        .inputBox {
+            .input {
+                margin-bottom: 70px;
+                input {
+                    font-size: 55px;
+                    text-align: center;
+                    padding: 47px 0;
+                    width: 100%;
+                }
+                .arrowDown {
+                    display: none;
+                }
+            }
+        }
+        .textBox {
+            .text {
+                font-size: 47px;
+                line-height: 2;
+            }
+            .checkBox {
+                display: none;
+            }
+        }
+        .button {
+            font-size: 55px;
+            margin-top: 150px;
+            width: 100%;
+            height: 149px;
+        }
+    }
+    .selectBox {
+        width: 106%;
+        left: -3%;
+        .selectBlock {
+            .radioBox {
+                padding: 60px 50px 0;
+            }
+            .otherBox {
+                padding: 70px 50px 0;
+            }
+            .radioBlock {
+                margin-bottom: 70px;
+                input {
+                    width: 30px;
+                    height: 30px;
+                }
+                label {
+                    font-size: 40px;
+                    margin-left: 22px;
+                }
+            }
+            .otherInput {
+                margin-left: 70px;
+                height: 76px;
+                border-radius: 7px;
+                margin-bottom: 50px;
+                input {
+                    width: 100%;
+                    font-size: 40px;
+                    padding: 0 20px;
+                }
+            }
+            .selectConfirm {
+                width: 233px;
+                height: 73px;
+                border-radius: 7px;
+                font-size: 36px;
+                margin: 0 auto 87px;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 750px) {
+    .panel {
+        width: 870px;
+        height: 616px;
+        background-color: rgba(19, 29, 45, 1);
+        .image {
+            display: flex;
+            width: 50%;
+        }
+        .close {
+            right: 24px;
+            top: 19px;
+            font-size: 16px;
+        }
+        .back {
+            display: none;
+        }
+        .block {
+            width: 50%;
+            .tabs {
+                display: flex;
+                padding: 30px 30px 0;
+                border-bottom: 1px solid #5B77A9;
+                color:#fff;
+                position: relative;
+                .tab {
+                    display: flex;
+                    flex: none;
+                    justify-content: center;
+                    min-width: 57px;
+                    padding-bottom: 10px;
+                    margin-right: 85px;
+                    border-bottom: 3px solid transparent;
+                    cursor: pointer;
+                }
+                button{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: absolute;
+                    right: -10px;
+                    top:-10px;
+                }
+                .active {
+                    border-bottom: 3px solid #5B77A9;
+                }
+            }
+        }
+    }
+    .info {
+        padding: 15px 40px;
+        .logo {
+            display: none;
+        }
+        .inputBox {
+            min-height: 200px;
+            justify-content: center;
+            .input {
+                margin-bottom: 20px;
+                input {
+                    font-size: 14px;
+                    padding: 12px;
+                    width: 100%;
+                }
+                .arrowDown {
+                    display: flex;
+                    font-size: 14px;
+                    padding: 12px 0;
+                    margin-right: 13px;
+                    color:#fff;
+                }
+            }
+        }
+        .textBox {
+            margin-top: 10px;
+            .text {
+                font-size: 14px;
+            }
+            .reg {
+                display: none;
+            }
+            .checkBox {
+                display: flex;
+                flex: none;
+                align-items: center;
+                input {
+                    height: 14px;
+                    width: 14px;
+                    border: 1px solid rgba(91, 119, 169, 0.4);
+                    outline: none;
+                    cursor: pointer;
+                }
+                label {
+                    font-size: 14px;
+                    color: #fff;
+                    margin-left: 10px;
+                }
+            }
+        }
+        .button {
+            width: 180px;
+            height: 40px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin: 10px auto 0;
+        }
+    }
+    .selectBox {
+        width: 600px;
+        left: calc(50% - 300px);
+        .selectBlock {
+            .radioBox {
+                padding: 40px 40px 0;
+            }
+            .otherBox {
+                padding: 40px 40px 0;
+            }
+            .radioBlock {
+                margin-bottom: 40px;
+                input {
+                    width: 14px;
+                    height: 14px;
+                }
+                label {
+                    font-size: 16px;
+                    margin-left: 13px;
+                }
+            }
+            .otherInput {
+                margin-left: 40px;
+                height: 42px;
+                border-radius: 4px;
+                margin-bottom: 40px;
+                input {
+                    width: 100%;
+                    font-size: 16px;
+                    padding: 0 10px;
+                }
+            }
+            .selectConfirm {
+                width: 128px;
+                height: 40px;
+                border-radius: 4px;
+                font-size: 14px;
+                margin: 0 auto 40px;
+            }
+        }
+    }
+}
+
+.auth {
+    display: flex;
+    flex: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    transition: bottom .3s ease-in-out;
+    z-index: 3;
+}
+
+.warp {
+    display: flex;
+    flex: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: -1;
+}
+
+.panel {
+    display: flex;
+    flex: none;
+    position: relative;
+    .image {
+        flex: none;
+        img {
+            width: 100%;
+        }
+    }
+    .close {
+        cursor: pointer;
+        position: absolute;
+    }
+    .back {
+        cursor: pointer;
+        position: absolute;
+        z-index: 1;
+    }
+    .block {
+        display: flex;
+        flex: none;
+        flex-direction: column;
+        .tabs {
+            flex: none;
+        }
+    }
+
+}
+
+.info {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    width: 100%;
+    .logo {
+        flex: none;
+        justify-content: center;
+    }
+    .inputBox {
+        display: flex;
+        flex: none;
+        flex-direction: column;
+        .input {
+            position: relative;
+            display: flex;
+            flex: none;
+            width: 100%;
+            border-bottom: 1px solid rgba(237, 237, 237, 0.5);
+            input {
+                background-color: transparent;
+                border: none;
+                outline: none;
+            }
+            .arrowDown {
+                flex: none;
+                position: absolute;
+                right: 0;
+                top: 0;
+                height: 100%;
+                align-items: center;
+            }
+        }
+    }
+    .textBox {
+        flex: none;
+        display: flex;
+        justify-content: space-between;
+        .text {
+            color: #5B77A9;
+            cursor: pointer;
+        }
+    }
+    .button {
+        display: flex;
+        flex: none;
+        background: #5B77A9;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        cursor: pointer;
+    }
+}
+
+.selectBox {
+    position: absolute;
+    top: calc(100% + 2px);
+    display: flex;
+    flex: none;
+    z-index: 1;
+    .selectWarp {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+    }
+    .selectBlock {
+        display: flex;
+        flex: none;
+        width: 100%;
+        background-color: #2A3649;
+        flex-direction: column;
+        .radioBox {
+            display: flex;
+            flex: none;
+            flex-wrap: wrap;
+        }
+        .otherBox {
+            display: flex;
+            flex: none;
+            border-top: 1px solid #5B77A9;
+        }
+        .radioBlock {
+            display: flex;
+            flex: none;
+            align-items: center;
+            input {
+                color: #fff;
+            }
+            label {
+                color: #fff;
+            }
+        }
+        .otherInput {
+            align-items: center;
+            display: flex;
+            flex: auto;
+            border: 1px solid #fff;
+            input {
+                color: #fff;
+            }
+        }
+        .selectConfirm {
+            display: flex;
+            flex: none;
+            justify-content: center;
+            align-items: center;
+            background-color: #5B77A9;
+            color: #fff;
+            cursor: pointer;
+        }
+    }
+}

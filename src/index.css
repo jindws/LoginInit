@@ -1,0 +1,19 @@
+html {
+  font-size: 16px;
+}
+
+:global(.main) {
+  margin: 0;
+  padding: 0;
+  font-family: 微软雅黑;
+  background-color: #091221;
+  color: #fff;
+  font-size: 1rem;
+}
+
+*, :after, :before {
+  box-sizing: border-box;
+}
+input{
+  color:#fff !important;
+}
