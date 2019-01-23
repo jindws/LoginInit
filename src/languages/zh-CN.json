@@ -1,8 +1,10 @@
 {
   "phone": "手机号",
+  "no user": "用户不存在",
   "email": "邮箱",
   "password": "密码",
   "register": "立即注册",
+  "regist_success": "注册成功",
   "login": "登录",
   "companyEmail": "公司邮箱",
   "userName": "用户姓名",
@@ -30,7 +32,6 @@
   "recommendWords": "非常感谢您的分享，我们将会把社区网址发送到您所填写的邮箱地址",
   "recommendName": "姓名",
   "recommendEmail": "好友邮箱",
-  "bsubmit": "提交",
   "recomendSuccess": "推荐好友成功",
   "rsubmit": "提交",
   "rcancel": "取消",

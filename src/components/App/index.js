@@ -51,7 +51,6 @@ class App extends Component {
 		return (
 			<Provider {...stores}>
 				{this.Show()}
-				
 			</Provider>
 		);
 	}

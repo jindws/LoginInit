@@ -1,16 +1,48 @@
 # LoginInit
 
-[![Travis][build-badge]][build]
-[![npm package][npm-badge]][npm]
-[![Coveralls][coveralls-badge]][coveralls]
+### React Component
+```
+import LoginInit from 'LoginInit'
 
-Describe LoginInit here.
-
-[build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square
-[build]: https://travis-ci.org/user/repo
-
-[npm-badge]: https://img.shields.io/npm/v/npm-package.png?style=flat-square
-[npm]: https://www.npmjs.org/package/npm-package
-
-[coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.png?style=flat-square
-[coveralls]: https://coveralls.io/github/user/repo
+-
+<LoginInit
+				Login = {{
+					forget:true,
+				}}
+				LoginSuccess = {(message)=>{
+						console.log(message);
+						this.setState({
+							show:false,
+						})
+					}
+				}
+				Register = {{
+					email:{
+						cn:'公司邮箱',
+						en:'Company Email',
+						// required:true,
+					},
+					userName:{
+						cn:'用户姓名',
+						en:'User name',
+						// required:true,
+					},
+					companyName:{
+						cn:'公司名称',
+						en:'Company name',
+						// required:true,
+					},
+					industry:{
+						cn:'所处行业',
+						en:'Industry',
+						// required:true,
+						list:{
+							Medical:'医疗',
+							Medical2:'医疗2',
+						}
+					}
+				}}
+				show = {show}
+				onClose={this.onClose.bind(this)}
+			/>
+```

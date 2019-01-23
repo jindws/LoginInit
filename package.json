@@ -1,5 +1,5 @@
 {
-  "name": "LoginInit",
+  "name": "logininit",
   "version": "1.0.0",
   "description": "LoginInit React component",
   "main": "lib/index.js",
@@ -27,6 +27,7 @@
     "antd": "^3.12.4",
     "classnames": "^2.2.6",
     "css-loader": "^2.1.0",
+    "dbfac": "^2.0.2",
     "history": "^4.7.2",
     "lodash": "^4.17.11",
     "mobx": "^5.9.0",
@@ -42,10 +43,19 @@
     "sass-loader": "^7.1.0"
   },
   "author": "",
-  "homepage": "",
+  "homepage": "https://github.com/moiamoia/LoginInit#readme",
   "license": "MIT",
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moiamoia/LoginInit.git"
+  },
   "keywords": [
     "react-component"
-  ]
+  ],
+  "directories": {
+    "test": "tests"
+  },
+  "bugs": {
+    "url": "https://github.com/moiamoia/LoginInit/issues"
+  }
 }

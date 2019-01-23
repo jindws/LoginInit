@@ -2,8 +2,9 @@ import TextStore from '../stores/TextStore';
 import {action, computed, observable, runInAction} from 'mobx';
 import {message} from 'antd';
 import {omit} from 'lodash'
-import {postData, getData, putData} from '../services/fetch'
+// import {postData, getData, putData} from '../services/fetch'
 import 'antd/lib/message/style/index.css'
+import DB from '../services/db.js'
 
 const STORAGE_KEY = "r2ai_community";
 
@@ -32,25 +33,34 @@ class UserStore {
   register = (data) => {
     if (this.loading) return;
     this.loading = true;
-    data.email = data.companyEmail;
-    data.phone = data.telephone;
-    data.username = data.userName;
-    data.language = TextStore.currentLanguage;
-    const userData = omit(data, ['companyEmail', 'telephone', 'userName']);
-    const checkd = this.checkData(userData);
+    data.email = data.email||'';
+    // data.phone = data.telephone;
+    // data.username = data.userName;
+    // data.language = TextStore.currentLanguage;
+    // const userData = omit(data, ['companyEmail', 'telephone', 'userName']);
+    const checkd = this.checkData(data);
     if (!checkd.status) {
       this.loading = false;
       message.error(checkd.error);
       return Promise.reject()
     }
-    return postData('/users/register', userData).then(result => {
+    return DB.User.register(data).then((re)=>{
       this.loading = false;
-      const {ok, statusText} = result;
-      if (ok === false) {
-        return message.error(TextStore.text(statusText));
-      }
-      message.info(TextStore.text("registerSuccess"), 10)
-    });
+      message.success(TextStore.text('regist_success'));
+      return re;
+    },e=>{
+      message.error(TextStore.text(e));
+      this.loading = false;
+      return false;
+    })
+    // return postData('/users/register', userData).then(result => {
+    //   this.loading = false;
+    //   const {ok, statusText} = result;
+    //   if (ok === false) {
+    //     return message.error(TextStore.text(statusText));
+    //   }
+    //   message.info(TextStore.text("registerSuccess"), 10)
+    // });
   };
 
   @action
@@ -62,50 +72,59 @@ class UserStore {
       this.loading = false;
       return message.error(checkd.error);
     }
-    postData('/users/login', data).then(result => {
+    return DB.User.login(data).then((re)=>{
       this.loading = false;
-      const {email, statusText, ok, username, userNick, admin, subscribe} = result;
-      if (ok === false) return message.error(TextStore.text(statusText));
-      runInAction(() => {
-        this.email = email;
-        this.init = true;
-        this.admin = admin;
-        this.info = {username, userNick, subscribe};
-      });
-      // localStorage.setItem(STORAGE_KEY, id);
-    })
+      return re;
+     },e=>{
+       message.error(TextStore.text(e));
+       this.loading = false;
+       return false;
+     })
+    
+    // postData('/users/login', data).then(result => {
+    //   this.loading = false;
+    //   const {email, statusText, ok, username, userNick, admin, subscribe} = result;
+    //   if (ok === false) return message.error(TextStore.text(statusText));
+    //   runInAction(() => {
+    //     this.email = email;
+    //     this.init = true;
+    //     this.admin = admin;
+    //     this.info = {username, userNick, subscribe};
+    //   });
+    //   // localStorage.setItem(STORAGE_KEY, id);
+    // })
   };
 
   @action
   changeUserNick = (userNick) => {
-    return postData('users/changeUserNick', {userNick}).then(result => {
-      const {ok, statusText} = result;
-      if (ok === false) {
-        return message.error(TextStore.text(statusText))
-      }
-      runInAction(() => this.info.userNick = userNick);
-      message.info(TextStore.text(result));
-    });
+    // return postData('users/changeUserNick', {userNick}).then(result => {
+    //   const {ok, statusText} = result;
+    //   if (ok === false) {
+    //     return message.error(TextStore.text(statusText))
+    //   }
+    //   runInAction(() => this.info.userNick = userNick);
+    //   message.info(TextStore.text(result));
+    // });
   }
 
   @action
   logout = () => {
     this.email = '';
-    putData('/users/logout').then(result => message.info(TextStore.text("logoutSuccess")))
+    // putData('/users/logout').then(result => message.info(TextStore.text("logoutSuccess")))
   }
 
   @action
   tryLogin = () => {
-    getData('/users/status').then(result => {
-      const {email, ok, username, admin, subscribe, userNick} = result;
-      if (ok === false) return localStorage.removeItem(STORAGE_KEY);
-      runInAction(() => {
-        this.email = email;
-        this.init = true;
-        this.admin = admin;
-        this.info = {username, userNick, subscribe};
-      });
-    })
+    // getData('/users/status').then(result => {
+    //   const {email, ok, username, admin, subscribe, userNick} = result;
+    //   if (ok === false) return localStorage.removeItem(STORAGE_KEY);
+    //   runInAction(() => {
+    //     this.email = email;
+    //     this.init = true;
+    //     this.admin = admin;
+    //     this.info = {username, userNick, subscribe};
+    //   });
+    // })
   }
 
   @action
@@ -118,10 +137,10 @@ class UserStore {
       message.error(checkd.error);
       return Promise.reject()
     }
-    return postData('/mail/recommend', Object.assign(data, {
-      username: this.info.username,
-      language: TextStore.currentLanguage
-    })).then(() => this.loading = false)
+    // return postData('/mail/recommend', Object.assign(data, {
+    //   username: this.info.username,
+    //   language: TextStore.currentLanguage
+    // })).then(() => this.loading = false)
   }
 
   @action
@@ -134,18 +153,18 @@ class UserStore {
       message.error(checkd.error);
       return Promise.reject();
     }
-    return Promise.all([
-      postData('/mail/seller', data),
-      postData('/mail/buyer', data),
-    ])
-      .then((result) => {
-        const {statusText, ok} = result;
-        this.loading = false;
-        if (ok === false) {
-          return message.error(TextStore.text(statusText));
-        }
-        message.info(TextStore.text("Sales inquiry sent successfully"))
-      })
+    // return Promise.all([
+    //   postData('/mail/seller', data),
+    //   postData('/mail/buyer', data),
+    // ])
+    //   .then((result) => {
+    //     const {statusText, ok} = result;
+    //     this.loading = false;
+    //     if (ok === false) {
+    //       return message.error(TextStore.text(statusText));
+    //     }
+    //     message.info(TextStore.text("Sales inquiry sent successfully"))
+    //   })
   }
 
   checkData = (data) => {
@@ -157,41 +176,38 @@ class UserStore {
       if (!data[key]) return {status: false, error: TextStore.text(key) + TextStore.text("paramsError")};
     }
     return {status: true}
-  }
-
-  restorePassword = (old, newPassword) => {
-    if (this.loading) return;
-    return postData('/users/changePassword', {old, newPassword});
   };
+
+  // restorePassword = (old, newPassword) => {
+  //   if (this.loading) return;
+  //   return postData('/users/changePassword', {old, newPassword});
+  // };
 
   forgetPassword = (email) => {
     if (this.loading) return;
     this.loading = true;
-    const checkd = this.checkData({email});
+    const checkd = this.checkData({
+      email,
+    });
     if (!checkd.status) {
       this.loading = false;
-      message.error(checkd.error);
-      return Promise.reject();
+      return message.error(checkd.error);
     }
-    return postData('/users/forgetPassword', {
-      email,
-      language: TextStore.currentLanguage
-    }).then((result) => {
-      const {ok, statusText} = result;
+    return DB.User.forget({email}).then((re)=>{
       this.loading = false;
-      if (!ok === false) {
-        message.error(TextStore.text(statusText));
-        return Promise.reject()
-      }
-      message.info(TextStore.text(result));
+      return re;
+    },e=>{
+      message.error(TextStore.text(e));
+      this.loading = false;
+      return false;
     })
-  }
+  };
 
   subscribe = () => {
     if (this.info.subscribe) {
       return Promise.resolve("repeat");
     }
-    return postData('/mail/subscribe', {language: TextStore.currentLanguage})
+    // return postData('/mail/subscribe', {language: TextStore.currentLanguage})
   }
 }
 

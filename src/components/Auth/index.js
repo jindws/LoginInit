@@ -1,47 +1,13 @@
 import React, {Component} from 'react';
-// import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import styles from './styles.module.scss';
 import {observer} from 'mobx-react';
-import {observable, when, runInAction, toJS} from 'mobx';
+import {observable, runInAction, toJS} from 'mobx';
 import {Icon,Button} from 'antd';
 import authImage from './image.png';
 import logo from '../App/rsquared_logo_color.svg';
 import 'antd/lib/icon/style/index.css'
 import 'antd/lib/button/style/index.css'
-
-// export default ({...args}) => {
-// 	const body = document.body;
-// 	const html = document.documentElement;
-// 	const div = document.createElement('div');
-// 	const topDom = html.scrollTop ? html : body;
-// 	const top = topDom.scrollTop;
-//
-// 	const init = () => {
-// 		body.appendChild(div);
-// 		body.style.overflow = 'hidden';
-// 		html.style.overflow = "hidden";
-// 		topDom.scrollTop = 0;
-// 	};
-//
-// 	const close = () => {
-// 		body.style.overflow = '';
-// 		html.style.overflow = "";
-// 		topDom.scrollTop = top;
-// 		try {
-// 			document.body.removeChild(div);
-// 		} catch (e) {
-//
-// 		}
-// 	};
-//
-// 	init();
-//
-// 	console.log(129,this)
-//
-// 	return ReactDOM.render(<Auth {...Object.assign(args, {close})} />, div)
-// }
-
 
 @observer
 export default class Auth extends Component {
@@ -49,17 +15,6 @@ export default class Auth extends Component {
 	
 	constructor(props) {
 		super(props);
-		// when(
-		// 	() => this.props.UserStore.email,
-		// 	() => this.onClose()
-		// );
-		
-		// if (this.props.isRegist) {
-		// 	this.register()
-		// } else {
-		// 	this.login()
-		// }
-		
 		if(props.Login){
 			this.type = 0;
 		}else if(props.Register){
@@ -86,11 +41,8 @@ export default class Auth extends Component {
 	};
 	
 	onClose = () => {
-		// const {onClose, close} = this.props;
 		this.refs.auth.style.bottom = '100%';
 		setTimeout(() => {
-			// if (onClose && typeof onClose === 'function') onClose();
-			// if (close && typeof close === 'function') close();
 			this.props.onClose();
 			this.refs.auth.style.bottom = '0';
 		}, 400)
@@ -106,21 +58,21 @@ export default class Auth extends Component {
 					forget={this.forget}
 					UserStore={this.props.UserStore}
 					TextStore={this.props.TextStore}
-					// push={this.props.push}
 				/>;
 			case 1:
 				return <Register
 					{...this.props}
 					onClose={this.onClose}
 					login={this.login}
-					forget={this.forget}
+					// forget={this.forget}
 					UserStore={this.props.UserStore}
 					TextStore={this.props.TextStore}/>;
 			case 2:
 				return <Forget
 					onClose={this.onClose}
-					login={this.login}
-					register={this.register}
+					// login={this.login}
+					// register={this.register}
+					UserStore={this.props.UserStore}
 					TextStore={this.props.TextStore}/>;
 			default:
 				this.onClose();
@@ -168,6 +120,11 @@ class Login extends Component {
 	@observable email = '';
 	@observable password = '';
 	
+	constructor(props){
+		super(props);
+		this.login = this.login.bind(this)
+	}
+	
 	emailChange = e => {
 		this.email = e.target.value;
 	};
@@ -176,15 +133,18 @@ class Login extends Component {
 		this.password = e.target.value;
 	};
 	
-	login = () => {
-		this.props.UserStore.login({
+	async login(){
+		const result = await this.props.UserStore.login({
 			email: this.email,
 			password: this.password
 		});
+		
+		if(result&&result!==true){
+			this.props.LoginSuccess(result);
+		}
 	};
 	
 	forget = () => {
-		// this.props.onClose();
 		this.props.forget();
 	};
 	
@@ -211,13 +171,20 @@ class Login extends Component {
 					<input type="password" placeholder={text("password")} value={this.password} onKeyPress={this.onEnterKeyPress}
 						   onChange={this.passwordChange}/>
 				</div>
-				<div className={styles.textBox} style={{display:(this.props.Login.forget?'':'none')}}>
+				<div className={styles.textBox} style={{display:(this.props.Login&&this.props.Login.forget?'':'none')}}>
 					<div className={classnames(styles.text, styles.reg)}
 						 onClick={this.props.register}>{text("createAccount")}</div>
 					<div className={styles.text} onClick={this.forget}>{text("auth.forget")}?</div>
 				</div>
 			</div>
-			<div className={styles.button} onClick={this.login}>{text("login")}</div>
+			{/*<div className={styles.button} onClick={this.login}>{text("login")}</div>*/}
+			<Button
+				className={styles.button}
+				onClick={this.login}
+				type="primary"
+				loading = {this.loading}>
+				{text("login")}
+			</Button>
 		</div>
 	}
 }
@@ -228,13 +195,7 @@ class Register extends Component {
 	@observable showCountry = false;
 	@observable loading = false;
 	@observable tuple = {
-		companyEmail: '',
-		userName: '',
-		companyName: '',
-		industry: '',
-		department: '',
-		telephone: '',
-		country: ''
+		// industry: '',
 	};
 	
 	@observable show = {};
@@ -292,7 +253,8 @@ class Register extends Component {
 						// console.log(list,industryList);
 						if(list){
 							// console.log(1,this.tuple,this.tuple[name])
-							const _name = this.tuple[name];
+							const _name = this.tuple[name]||'';
+							console.log(this.tuple[name],name);
 							const display_name = _cn?_name[1]:_name[0];
 							const value = toJS(this.tuple[name]);
 							return <div className={styles.input} key={name}>
@@ -323,34 +285,33 @@ class Register extends Component {
 						</div>
 					})
 				}
-				
-				{/*<div className={styles.input}>*/}
-					{/*<input placeholder={text("industry")} defaultValue={this.tuple.industry} readOnly={true}*/}
-						   {/*onClick={() => this.showIndustry = true}/>*/}
-					{/*<div className={styles.arrowDown} onClick={() => this.showIndustry = true}><Icon type="caret-down"*/}
-																									 {/*theme="outlined"/></div>*/}
-					{/*<SelectBox visible={this.showIndustry} list={industryList} other={true} col={4} value={this.tuple.industry}*/}
-							   {/*onClose={() => this.showIndustry = false} onChange={this.setProperty.bind(null, 'industry')}*/}
-							   {/*text={text}/>*/}
-				{/*</div>*/}
-				{/*<div className={styles.input}>*/}
-					{/*<input placeholder={text("country")} defaultValue={this.tuple.country} readOnly={true}*/}
-						   {/*onClick={() => this.showCountry = true}/>*/}
-					{/*<div className={styles.arrowDown} onClick={() => this.showCountry = true}><Icon type="caret-down"*/}
-																									{/*theme="outlined"/></div>*/}
-					{/*<SelectBox visible={this.showCountry} list={countryList} other={true} col={2} value={this.tuple.country}*/}
-							   {/*onClose={() => this.showCountry = false} onChange={this.setProperty.bind(null, 'country')}*/}
-							   {/*text={text}/>*/}
-				{/*</div>*/}
 			</div>
-			<div className={styles.button} onClick={loading && this.loading ? null : this.register}>{this.loading ?
-				<Icon type='loading'/> : text("submit")}</div>
+			<Button
+				className={styles.button}
+				onClick={this.register}
+				type="primary"
+				loading = {this.loading}>
+				{text("submit")}
+			</Button>
+			{/*<div className={styles.button} onClick={loading && this.loading ? null : this.register}>{this.loading ?*/}
+				{/*<Icon type='loading'/> : text("submit")}</div>*/}
 		</div>
 	}
 }
 
 @observer
 class Forget extends Component {
+	
+	async forget(){
+		const result = await this.props.UserStore.forgetPassword(this.email);
+		
+		if(result&&result!==true){
+			// this.props.ForgetSuccess(result);
+			console.log(this.props)
+			this.props.onClose()
+		}
+	};
+	
 	render() {
 		const {text} = this.props.TextStore;
 		return <div className={styles.info}>
@@ -361,10 +322,19 @@ class Forget extends Component {
 			</div>
 			<div className={styles.inputBox}>
 				<div className={styles.input}>
-					<input placeholder={text('forgetPassword')}/>
+					<input onChange={(e)=>{
+						this.email = e.target.value;
+					}}
+					value={this.email} placeholder={text('forgetPassword')}/>
 				</div>
 			</div>
-			<div className={styles.button}>提交</div>
+			<Button
+				className={styles.button}
+				onClick={this.forget.bind(this)}
+				type="primary"
+				loading = {this.loading}>
+				{text("rsubmit")}
+			</Button>
 		</div>
 	}
 }
@@ -393,7 +363,7 @@ class SelectBox extends Component {
 	};
 	
 	render() {
-		const {visible, list, value, other, col, onClose, text} = this.props;
+		const {visible, list, value=[], other, col, onClose, text} = this.props;
 		const radioStyle = {width: (100 / col) + "%"};
 		const _list = Object.entries(list);
 		const _cn = localStorage['community-language'] === "zh-CN";
@@ -402,7 +372,7 @@ class SelectBox extends Component {
 			<div className={styles.selectBlock}>
 				<div className={styles.radioBox}>
 					{
-						_list.map((itm,index)=>{
+						_list.map((itm=[],index)=>{
 							const name = _cn?itm[1]:itm[0];
 							console.log(value,itm,name)
 							return <div className={styles.radioBlock} style={radioStyle} key={index}>
@@ -412,13 +382,6 @@ class SelectBox extends Component {
 							</div>
 						})
 					}
-					{/*{list.map((v, k) => {*/}
-						{/*return <div className={styles.radioBlock} style={radioStyle} key={k}>*/}
-							{/*<input id={'reg_value' + k} type="radio" name='regRadio' onChange={this.handleChange.bind(null, v)}*/}
-								   {/*checked={v === value}/>*/}
-							{/*<label htmlFor={'reg_value' + k}>{v}</label>*/}
-						{/*</div>*/}
-					{/*})}*/}
 				</div>
 				{other && <div className={styles.otherBox}>
 					<div className={styles.radioBlock}>
