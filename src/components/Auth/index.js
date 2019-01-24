@@ -209,9 +209,11 @@ class Register extends Component {
 	register = () => {
 		runInAction(() => this.loading = true);
 		const {TextStore, UserStore} = this.props;
-		UserStore.register({...this.tuple, language: TextStore.currentLanguage}).then(() => {
+		UserStore.register({...this.tuple, language: TextStore.currentLanguage}).then(result => {
 			runInAction(() => this.loading = false);
-			this.props.login()
+			if(result){
+				this.props.login()
+			}
 		}, () => {
 			runInAction(() => this.loading = false)
 		})
