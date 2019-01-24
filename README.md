@@ -2,7 +2,7 @@
 
 ### React Component
 ```
-import LoginInit from 'LoginInit'
+import LoginInit from 'react-logininit'
 
 -
 <LoginInit

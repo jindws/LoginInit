@@ -44,11 +44,15 @@ class UserStore {
       message.error(checkd.error);
       return Promise.reject()
     }
+    data.language = localStorage['community-language'];
     return DB.User.register(data).then((re)=>{
       this.loading = false;
       message.success(TextStore.text('regist_success'));
       return re;
     },e=>{
+      if(!TextStore.text(e)){
+        e = "Fail"
+      }
       message.error(TextStore.text(e));
       this.loading = false;
       return false;
@@ -72,10 +76,15 @@ class UserStore {
       this.loading = false;
       return message.error(checkd.error);
     }
+    data.language = localStorage['community-language'];
     return DB.User.login(data).then((re)=>{
       this.loading = false;
       return re;
      },e=>{
+      
+      if(!TextStore.text(e)){
+        e = "Fail"
+      }
        message.error(TextStore.text(e));
        this.loading = false;
        return false;
@@ -193,10 +202,17 @@ class UserStore {
       this.loading = false;
       return message.error(checkd.error);
     }
-    return DB.User.forget({email}).then((re)=>{
+    data.language = localStorage['community-language'];
+    return DB.User.forget({
+      email,
+      language:'community-language'
+    }).then((re)=>{
       this.loading = false;
       return re;
     },e=>{
+      if(!TextStore.text(e)){
+        e = "Fail"
+      }
       message.error(TextStore.text(e));
       this.loading = false;
       return false;

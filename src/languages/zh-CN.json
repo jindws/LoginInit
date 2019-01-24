@@ -4,6 +4,7 @@
   "email": "邮箱",
   "password": "密码",
   "register": "立即注册",
+  "Fail": "失败",
   "regist_success": "注册成功",
   "login": "登录",
   "companyEmail": "公司邮箱",

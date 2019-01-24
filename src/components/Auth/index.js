@@ -194,9 +194,7 @@ class Register extends Component {
 	@observable showIndustry = false;
 	@observable showCountry = false;
 	@observable loading = false;
-	@observable tuple = {
-		// industry: '',
-	};
+	@observable tuple = {};
 	
 	@observable show = {};
 	
@@ -220,23 +218,9 @@ class Register extends Component {
 	};
 	
 	render() {
-		const {loading} = this.props.UserStore;
+		// const {loading} = this.props.UserStore;
 		const {text} = this.props.TextStore;
 		const Register = Object.entries(this.props.Register);
-		// const industryList = [
-		// 	text('industry.medical'),
-		// 	text('industry.insurance'),
-		// 	text('industry.automobile'),
-		// 	text('industry.finance'),
-		// 	text('industry.pharmacy'),
-		// 	text('industry.environmental'),
-		// 	text('industry.telecommunication'),
-		// 	text('industry.energy')
-		// ];
-		// const countryList = [
-		// 	text('country.china'),
-		// 	text('country.us')
-		// ];
 		const _cn = localStorage['community-language'] === 'zh-CN';
 		return <div className={styles.info}>
 			<div className={styles.back} onClick={this.props.login}><Icon type="left"/></div>
@@ -250,11 +234,8 @@ class Register extends Component {
 						const {list,cn,en} = itm[1];
 						
 						const placeholder = _cn?cn:en;
-						// console.log(list,industryList);
 						if(list){
-							// console.log(1,this.tuple,this.tuple[name])
 							const _name = this.tuple[name]||'';
-							console.log(this.tuple[name],name);
 							const display_name = _cn?_name[1]:_name[0];
 							const value = toJS(this.tuple[name]);
 							return <div className={styles.input} key={name}>
@@ -278,10 +259,9 @@ class Register extends Component {
 									text={text}/>
 							</div>
 						}
-						return <div key={name}
-									className={styles.input}>
-								<input placeholder={placeholder||itm[0]} value={this.tuple[name]}
-									  onChange={this.handleChange.bind(null, name)}/>
+						return <div key={name} className={styles.input}>
+								<input placeholder={placeholder||itm[0]} value={this.tuple[name]||''}
+									  onChange={this.handleChange.bind(this, name)}/>
 						</div>
 					})
 				}
@@ -374,7 +354,6 @@ class SelectBox extends Component {
 					{
 						_list.map((itm=[],index)=>{
 							const name = _cn?itm[1]:itm[0];
-							console.log(value,itm,name)
 							return <div className={styles.radioBlock} style={radioStyle} key={index}>
 								<input id={'reg_value' + index} type="radio" name='regRadio' onChange={this.handleChange.bind(this,itm)}
 									   checked={itm[0]=== value[0]}/>
