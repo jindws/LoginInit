@@ -48,7 +48,7 @@ export default class Auth extends Component {
 		}, 400)
 	};
 	
-	renderInfo = () => {
+	renderInfo = (message) => {
 		switch (this.type) {
 			case 0:
 				return <Login
@@ -64,6 +64,7 @@ export default class Auth extends Component {
 					{...this.props}
 					onClose={this.onClose}
 					login={this.login}
+					RegisterText = {message._RegisterText}
 					// forget={this.forget}
 					UserStore={this.props.UserStore}
 					TextStore={this.props.TextStore}/>;
@@ -82,7 +83,9 @@ export default class Auth extends Component {
 	
 	render() {
 		const {text} = this.props.TextStore;
-		const {Login,Register} = this.props;
+		const {Login,Register,RegisterText} = this.props;
+		const _cn = localStorage['community-language'] === 'zh-CN';
+		const _RegisterText = _cn?RegisterText.cn:RegisterText.en;
 		return <div className={styles.auth} ref="auth">
 			<div className={styles.warp}/>
 			<div className={styles.panel}>
@@ -100,7 +103,7 @@ export default class Auth extends Component {
 						<div style={{display:(Register?'':'none')}}
 							 className={classnames(styles.tab, {
 							[styles.active]: this.type === 1
-						})} onClick={this.register}>{text('createAccount')}</div>
+						})} onClick={this.register}>{_RegisterText||text('createAccount')}</div>
 						<Button
 							onClick={this.onClose}
 							size = 'small'
@@ -108,7 +111,9 @@ export default class Auth extends Component {
 							shape="circle"
 							icon="close" />
 					</div>
-					{this.renderInfo()}
+					{this.renderInfo({
+						_RegisterText,
+					})}
 				</div>
 			</div>
 		</div>
@@ -157,7 +162,6 @@ class Login extends Component {
 	render() {
 		const {text} = this.props.TextStore;
 		return <div className={styles.info}>
-			{/*<div className={styles.close} onClick={this.props.onClose}><Icon type="close"/></div>*/}
 			<div className={styles.back} onClick={this.props.onClose}><Icon type="close"/></div>
 			<div className={styles.logo}>
 				<img src={logo} alt="logo"/>
@@ -177,7 +181,6 @@ class Login extends Component {
 					<div className={styles.text} onClick={this.forget}>{text("auth.forget")}?</div>
 				</div>
 			</div>
-			{/*<div className={styles.button} onClick={this.login}>{text("login")}</div>*/}
 			<Button
 				className={styles.button}
 				onClick={this.login}
@@ -220,10 +223,25 @@ class Register extends Component {
 	};
 	
 	render() {
-		// const {loading} = this.props.UserStore;
 		const {text} = this.props.TextStore;
 		const Register = Object.entries(this.props.Register);
 		const _cn = localStorage['community-language'] === 'zh-CN';
+		
+		let patterns = true;
+		
+		Register.forEach(itm=>{
+			const {pattern} = itm[1];
+			if(pattern){
+				const name = itm[0];
+				const _name = this.tuple[name]||'';
+				const result = pattern.test(_name)
+				if(!result){
+					patterns = false;
+				}
+			}
+		});
+		
+		
 		return <div className={styles.info}>
 			<div className={styles.back} onClick={this.props.login}><Icon type="left"/></div>
 			<div className={styles.logo}>
@@ -233,7 +251,7 @@ class Register extends Component {
 				{
 					Register.map(itm=>{
 						const name = itm[0];
-						const {list,cn,en} = itm[1];
+						const {list,cn,en,pattern} = itm[1];
 						
 						const placeholder = _cn?cn:en;
 						if(list){
@@ -241,6 +259,7 @@ class Register extends Component {
 							const display_name = _cn?_name[1]:_name[0];
 							const value = toJS(this.tuple[name]);
 							return <div className={styles.input} key={name}>
+								<i style={{display:(itm[1].pattern?'':'none')}}>*</i>
 								<input placeholder={placeholder}
 									   defaultValue={display_name}
 									   readOnly={true}
@@ -262,6 +281,7 @@ class Register extends Component {
 							</div>
 						}
 						return <div key={name} className={styles.input}>
+								<i style={{display:(pattern?'':'none')}}>*</i>
 								<input placeholder={placeholder||itm[0]} value={this.tuple[name]||''}
 									  onChange={this.handleChange.bind(this, name)}/>
 						</div>
@@ -272,11 +292,10 @@ class Register extends Component {
 				className={styles.button}
 				onClick={this.register}
 				type="primary"
+				disabled = {!patterns}
 				loading = {this.loading}>
-				{text("submit")}
+				{this.props.RegisterText||text("submit")}
 			</Button>
-			{/*<div className={styles.button} onClick={loading && this.loading ? null : this.register}>{this.loading ?*/}
-				{/*<Icon type='loading'/> : text("submit")}</div>*/}
 		</div>
 	}
 }

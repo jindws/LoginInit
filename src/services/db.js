@@ -1,19 +1,20 @@
 import DBF from 'dbfac'
 
-DBF.requestHead = 'http://localhost:8001';
+// DBF.requestHead = 'http://localhost:8001';
 DBF.dataType = 'text';
 
 DBF.create('User', {
 	login:{
-		url       :'/', //请求地址
+		url       :'/login', //请求地址
+		method    :'PUT',
 	},
 	register:{
-		url       :'/',
+		url       :'/login',
 		method    :'POST',
 	},
 	forget:{
-		url       :'/',
-		method    :'PUT',
+		url       :'/login',
+		method    :'PATCH',
 	}
 });
 

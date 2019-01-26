@@ -31,26 +31,29 @@ class Demo extends Component {
 						})
 					}
 				}
+				RegisterText = {{
+					cn:'申请试用',
+					en:'Trial',
+				}}
 				Register = {{
 					email:{
 						cn:'公司邮箱',
 						en:'Company Email',
-						// required:true,
+						pattern:/^[a-zA-Z0-9_-]+(\.([a-zA-Z0-9_-])+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
 					},
 					userName:{
 						cn:'用户姓名',
 						en:'User name',
-						// required:true,
+						pattern:/^[\s\S]*.*[^\s][\s\S]*$/,
 					},
 					companyName:{
 						cn:'公司名称',
 						en:'Company name',
-						// required:true,
 					},
 					industry:{
 						cn:'所处行业',
 						en:'Industry',
-						// required:true,
+						pattern:/^[\s\S]*.*[^\s][\s\S]*$/,
 						list:{
 							Medical:'医疗',
 							Medical2:'医疗2',
