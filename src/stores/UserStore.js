@@ -202,10 +202,11 @@ class UserStore {
       this.loading = false;
       return message.error(checkd.error);
     }
-    data.language = localStorage['community-language'];
+    // data.language = localStorage['community-language'];
     return DB.User.forget({
       email,
-      language:'community-language'
+      language:localStorage['community-language'],
+      // language:'community-language'
     }).then((re)=>{
       this.loading = false;
       return re;
@@ -223,7 +224,6 @@ class UserStore {
     if (this.info.subscribe) {
       return Promise.resolve("repeat");
     }
-    // return postData('/mail/subscribe', {language: TextStore.currentLanguage})
   }
 }
 
